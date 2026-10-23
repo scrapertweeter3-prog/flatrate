@@ -1,0 +1,41 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{flatrate}[2026/10/23 v0.1.0 Typeset flat-rate pricing tables and rate cards]
+
+% flatrate: a small package for laying out flat-rate pricing tables,
+% rate cards and subscription summaries without hand-tuning tabulars.
+
+\RequirePackage{array}
+
+% Currency symbol used by \rateitem, \rateplan, \ratesubtotal, \ratetotal.
+\newcommand{\flatratecurrency}{\$}
+\newcommand{\ratecurrency}[1]{\renewcommand{\flatratecurrency}{#1}}
+
+% \begin{ratecard}{Title} ... \end{ratecard}
+\newenvironment{ratecard}[1]{%
+  \par\addvspace{\medskipamount}%
+  \noindent\begin{tabular}%
+    {@{}>{\raggedright\arraybackslash}p{0.70\linewidth}%
+      >{\raggedleft\arraybackslash}p{0.24\linewidth}@{}}
+  \multicolumn{2}{@{}l}{\textbf{\large #1}}\tabularnewline[4pt]
+  \hline
+  \textbf{Service} & \textbf{Price}\tabularnewline
+  \hline
+}{%
+  \hline
+  \end{tabular}%
+  \par\addvspace{\medskipamount}%
+}
+
+% \rateitem{description}{amount}
+\newcommand{\rateitem}[2]{#1 & \flatratecurrency#2\tabularnewline[2pt]}
+
+% \rateplan{plan name}{amount}{billing period}
+\newcommand{\rateplan}[3]{#1\enspace(#3) & \flatratecurrency#2\tabularnewline[2pt]}
+
+% \ratesubtotal{label}{amount}
+\newcommand{\ratesubtotal}[2]{\hline\noalign{\vskip 3pt}#1 & \flatratecurrency#2\tabularnewline[2pt]}
+
+% \ratetotal{label}{amount}
+\newcommand{\ratetotal}[2]{\hline\noalign{\vskip 3pt}#1 & \textbf{\flatratecurrency#2}\tabularnewline[2pt]}
+
+\endinput
